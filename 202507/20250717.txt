@@ -1,0 +1,19 @@
+
+作業内容
+プログラミング学習用記録用のリポジトリを作成する
+
+学習内容
+githubリポジトリの作成方法は以下の通りである
+まずVScodeを開いて以下のコマンドを実行
+~$ mkdir dev-learning-log
+kanako@kanazo:~$ cd dev-learning-log
+kanako@kanazo:~/dev-learning-log$ code .
+そして新しく開かれたVScodeのターミナルを開いて以下のコマンドを実行
+echo "# dev-learning-log" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin git@github.com:kakaz-one/dev-learning-log.git
+git push -u origin main
+すると、ローカルで作成したリポジトリがgithubでリポジトリが作成される
