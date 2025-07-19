@@ -1,0 +1,25 @@
+
+作業内容
+XAMPPのhtdocsの中のphp_testフォルダでPHPを使って遊んでみた
+
+学習内容
+XAMPPのhtdocsの中のphp_testフォルダの開き方は以下の通りである
+まずVScodeを開いて以下のコマンドを実行
+kanako@kanazo:~$ cd /mnt/c/xampp/htdocs
+kanako@kanazo:/mnt/c/xampp/htdocs$ ls
+applications.html  bitnami.css  dashboard  favicon.ico  hello.php  img  index.php  php_test  webalizer  xampp
+kanako@kanazo:/mnt/c/xampp/htdocs$ cd php_test
+kanako@kanazo:/mnt/c/xampp/htdocs/php_test$ code .
+
+コマンドcode .で新たなVScodeが開く
+
+変更したphpをブラウザで見る方法
+以下のコマンドを実行
+php -S localhost:8000
+
+ファイルに変更を加えて、変更内容を反映した新たなサーバーを立ち上げたい場合はまずctrl+Cでサーバーを切り、以下のコマンドを実行
+php -S localhost:8000
+（もし、8000を立ち上げたままでもう一つサーバーを立ち上げたい場合はctrl+Cをやらずに以下のコマンドを実行を実行する
+php -S localhost:8001　（とにかく8000以外数字ならOK）
+）
+
