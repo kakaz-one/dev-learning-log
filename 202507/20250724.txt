@@ -1,0 +1,328 @@
+
+作業内容
+「独習PHP」のイントロダクションとchapter2「PHPの基本」の変数まで学習内容を進めた
+
+---
+
+# 学習内容
+
+## 1. コメントアウトについて
+
+### 概要
+プログラムのコードの一部を一時的に無効化する技術
+
+### 詳細説明
+- **定義**: 実行したくないコードをコメント記号で囲んで、プログラムが実行されないようにする作業
+- **主な目的**: 
+  - デバッグ時の使用：問題の原因を特定するために疑わしいコードを無効化
+  - 開発中の一時保存：新しい実装を試す際に古いコードを削除せずに残す
+
+### 実践例
+**言語別の記法例:**
+- JavaScript/Java/C++
+  ```javascript
+  // 単行コメント
+  /* 複数行コメント */
+  ```
+- Python
+  ```python
+  # 単行コメント
+  ```
+- HTML
+  ```html
+  <!-- コメント -->
+  ```
+
+### 注意点
+多くのエディタでキーボードショートカット（Ctrl+/など）で簡単に切り替え可能
+
+### まとめ
+コメントアウトはデバッグ・開発効率向上の重要な技術
+
+---
+
+## 2. ファイル構成のTree表示方法
+
+### 概要
+プロジェクトのファイル構成を視覚的に表示する方法
+
+### 詳細説明
+**Windows環境:**
+- コマンドプロンプト
+  ```cmd
+  tree          # 基本表示
+  tree /f       # ファイルも含めて表示
+  tree /a       # ASCII文字で表示
+  ```
+- PowerShell
+  ```powershell
+  Get-ChildItem -Recurse | Format-Table Name, Directory
+  ```
+
+**macOS/Linux環境:**
+- treeコマンド（要インストール）
+  ```bash
+  tree          # 基本表示
+  tree -a       # 隠しファイルも表示
+  tree -L 2     # 階層を2レベルまで制限
+  tree -I "node_modules|.git"  # 特定フォルダを除外
+  ```
+
+### 実践例
+**インストール方法:**
+- macOS: `brew install tree`
+- Ubuntu/Debian: `sudo apt install tree`
+- CentOS/RHEL: `sudo yum install tree`
+
+**エディタ・IDE:**
+- Visual Studio Code: エクスプローラーパネル + 拡張機能
+- 各種モダンエディタ: ファイルエクスプローラー機能搭載
+
+### まとめ
+ファイル構成の可視化により開発時の見通しが良くなる
+
+---
+
+## 3. PHPファイルのブラウザ表示方法
+
+### 概要
+PHPファイルをブラウザで正しく表示するための方法
+
+### 詳細説明
+**前提知識:**
+PHPファイルは静的なHTMLファイルとは異なり、サーバー側で処理される必要がある。file://でのアクセスではPHPコードは実行されず、ソースコードがそのまま表示される。
+
+### 実践例
+**方法1: PHP内蔵サーバー（推奨）**
+```bash
+php -S localhost:8000
+```
+アクセス: `http://localhost:8000/パス/ファイル名.php`
+
+**方法2: XAMPP/MAMP/WAMP**
+1. 該当ソフトをインストール・起動
+2. プロジェクトフォルダをhtdocsフォルダ内に配置
+3. Apacheを起動
+4. `http://localhost/プロジェクト名/ファイルパス` でアクセス
+
+**方法3: その他の開発環境**
+- Node.js系: `npm install -g php-server`
+- Docker: `docker run -p 8000:80 -v $(pwd):/var/www/html php:apache`
+
+### まとめ
+PHPファイルの表示にはWebサーバーが必須
+
+---
+
+## 4. php -S コマンドの理解
+
+### 概要
+PHP内蔵サーバーの正しい使用方法
+
+### 詳細説明
+**重要な概念:**
+php -S コマンドは「Webサーバーを起動する」コマンドであり、特定のファイルを直接実行するコマンドではない。
+
+**正しい構文:**
+```bash
+php -S [ホスト名]:[ポート番号] [ドキュメントルート]
+```
+
+**なぜパスを含められないのか:**
+1. サーバーはディレクトリ全体を管理する仕組み
+2. URLとファイルパスは別の概念
+3. 1つのサーバーで複数のファイル/フォルダにアクセス可能にするため
+
+### 実践例
+**正しい使用手順:**
+1. `php -S localhost:8000` でサーバー起動
+2. ブラウザで `http://localhost:8000/目的のファイルパス` にアクセス
+
+**直接実行したい場合:**
+```bash
+php ファイルパス.php  # コマンドラインで直接実行（ブラウザ表示なし）
+```
+
+### 注意点
+- デフォルト動作の理解: `php -S localhost:8000` 実行時、ルートディレクトリにindex.phpがあると自動的に読み込まれる
+- URLとコマンドの区別: `http://localhost:8000/chap01/prac5.php` は「URL」であり、ブラウザのアドレスバーに入力するもの
+- 開発環境の基本: Webアプリケーション開発では「サーバー起動 → ブラウザアクセス」の2段階手順が基本となる
+
+### まとめ
+コマンドの役割と正しい使用方法の理解が重要
+
+---
+
+## 5. PHPスクリプトブロックの終了タグについて
+
+### 概要
+PHPスクリプトブロックの正しい終了方法
+
+### 詳細説明
+**学習のきっかけ:**
+「独習PHP」という書籍で以下の記述を読んだ：
+「スクリプトブロックは.phpファイルの末尾で終わる場合はスクリプトの終了を表す「?>」を省略できます。逆に終了タグがあって、その後方に改行や空白があると、これがブラウザにも出力されてしまい、レイアウトが微妙にずれる原因にもなるので要注意です」
+
+### 実践例
+**発生した問題:**
+test.phpファイルに以下のコードを記載したところ、`</body>`にエラーが発生した：
+
+```html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <?php
+  print 'こんにちは世界！<br />';
+  print 'こんにちは皆さん';
+  
+</body>
+</html>
+```
+
+**エラーの原因:**
+PHPスクリプトブロックが正しく閉じられていないことが原因。
+
+詳細：
+- `<?php` でPHPスクリプトを開始したが、`?>`での終了タグがない
+- 書籍の「終了タグの省略」は「PHPファイルの末尾でPHPコードが終わる場合」のみ適用される
+- 上記のコードではPHPスクリプトが終了していないまま`</body>`というHTMLタグが出現
+- PHPパーサーが`</body>`をPHPコードの一部として解釈しようとしてエラー発生
+
+### 解決方法
+**方法1：終了タグを追加する（推奨）**
+```php
+<?php
+print 'こんにちは世界！<br />';
+print 'こんにちは皆さん';
+?>
+</body>
+</html>
+```
+
+**方法2：PHPコードをファイル末尾に移動する**
+```html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+</body>
+</html>
+<?php
+print 'こんにちは世界！<br />';
+print 'こんにちは皆さん';
+// ここでファイルが終わるので?>は省略可能
+```
+
+### 注意点
+1. PHPの終了タグ省略は「ファイル末尾でPHPが終わる場合のみ」適用される
+2. HTMLとPHPが混在する場合は終了タグを明示的に書くのが一般的
+3. スクリプトブロックが適切に閉じられていない場合、後続のHTMLがPHPコードとして解釈されエラーになる
+
+### まとめ
+実際のコーディングでは文脈に応じて適切な方法を選択することが重要
+
+---
+
+## 6. PHPにおける予約語
+
+### 概要
+PHP言語の文法や機能として特別な意味を持つ単語
+
+### 詳細説明
+**予約語とは:**
+PHPにおける予約語（Reserved Words）とは、PHP言語の文法や機能として特別な意味を持つ単語で、変数名、関数名、クラス名、定数名などの識別子として使用できない単語のことです。
+
+これらの単語はPHP言語の構文や機能を表現するために予約されており、プログラマが自由に命名に使用することはできません。
+
+### 実践例
+**制御構文関連の予約語:**
+```php
+if, else, elseif, endif
+switch, case, default, endswitch
+for, endfor, foreach, endforeach
+while, endwhile, do
+break, continue, return
+goto
+```
+
+**関数・クラス関連の予約語:**
+```php
+function
+class, interface, trait, enum
+public, private, protected
+static, final, abstract, readonly
+extends, implements
+new, clone, instanceof
+```
+
+**データ型・値関連の予約語:**
+```php
+true, false, null
+array, object, string, int, float, bool
+void, mixed, never, callable
+```
+
+**その他重要な予約語:**
+```php
+echo, print
+isset, empty, unset
+include, require, include_once, require_once
+try, catch, finally, throw
+use, namespace
+global, const
+exit, die
+```
+
+### 注意点
+**予約語使用時のエラー例:**
+```php
+// エラーになる例
+function class() {  // Parse error: syntax error
+    return "Hello";
+}
+
+const if = "test";  // Parse error: syntax error
+
+class echo {  // Parse error: syntax error
+    // クラス定義
+}
+```
+
+**変数名での特殊ケース:**
+PHPでは予約語でも変数名（$記号付き）として使える場合があります：
+```php
+$if = "test";      // 使用可能（推奨されない）
+$class = "MyClass"; // 使用可能（推奨されない）
+$function = "func"; // 使用可能（推奨されない）
+```
+
+ただし、コードの可読性と将来の互換性を考慮して避けることが強く推奨されます。
+
+**注意点とベストプラクティス:**
+1. バージョン間での違い
+   - PHPのバージョンアップで新しい予約語が追加される場合がある
+   - 最新の予約語リストを定期的に確認する
+
+2. 命名規則
+   - 予約語を避けた分かりやすい変数名・関数名を使用する
+   - 英単語を組み合わせた説明的な名前を付ける
+
+3. エラー対処
+   - パースエラーが発生した場合は予約語の使用を疑う
+   - IDEやエディタの構文ハイライト機能を活用する
+
+### まとめ
+- 予約語はPHP言語の基本機能を表す重要な単語
+- 識別子として使用することはできない（変数名は例外的に可能だが非推奨）
+- コーディング時は予約語を避けて命名する習慣をつける
+- エラーが出た場合は予約語の使用を確認する
+- 最新のPHPバージョンの予約語リストを把握しておく
