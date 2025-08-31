@@ -1,0 +1,10 @@
+
+作業内容
+storesのgirl code campに今日と昨日参加
+応用情報技術者試験の過去問を数問解いた
+
+学習内容
+storesのgirl code campで使用したリポジトリ
+https://github.com/heyinc/tech-girls-camp-web
+
+https://github.com/heyinc/tech-girls-camp-ios
