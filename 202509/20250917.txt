@@ -1,0 +1,7 @@
+
+作業内容
+応用情報技術者試験の過去問を解いた
+
+学習内容
+ARP（Address Resolution Protocol）は、IPアドレスから対応する機器のMAC
+アドレスを取得するプロトコル
